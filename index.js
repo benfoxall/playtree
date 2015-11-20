@@ -73,6 +73,7 @@ app.get('/logout', function(req, res){
 
 
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded());
 app.set('views', './views');
 app.set('view engine', 'jade');
 
