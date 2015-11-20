@@ -7,10 +7,14 @@ html(lang="en")
   body
     .container
       if user
+        .user
+          p
+            if user.properties.photos[0]
+              img(src=user.properties.photos[0])
+            = user.properties.displayName
+      else
         p.user
-          if user.properties.photos[0]
-            img(src=user.properties.photos[0])
-          = user.properties.displayName
+          a(href="auth") Sign in with spotify
 
       h1 playtree
 
