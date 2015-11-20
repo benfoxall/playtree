@@ -98,7 +98,8 @@ app.post('/', function(req, res) {
   });
 });
 
-app.get('/:id', function(req, res){
+app.get('/:id', function(req, res, next){
+    if(!parseInt(req.params.id)) return next();
     db.cypher({
       // TODO limit to tracks not users
       query: 'MATCH (track-[*0..25]->n) WHERE id(n)={id} RETURN track',
@@ -113,6 +114,7 @@ app.get('/:id', function(req, res){
 });
 
 app.post('/:id', function(req, res){
+    if(!parseInt(req.params.id)) return next();
     db.cypher({
       query: 'MATCH (p) WHERE id(p)={id} CREATE (n:track { uri: {uri}, why: {why} }), (p)-[:PARENT]->(n) RETURN n',
       params: {
