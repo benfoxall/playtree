@@ -1,0 +1,29 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    title Playtree
+    link(rel="stylesheet" href="style.css")
+  body
+    .container
+      h1 playtree
+
+      if tracks
+        ol
+          each track in tracks
+            li
+              h3= track.track.properties.uri
+              p
+                a(href=track.track._id)= track.track.properties.why
+
+        hr
+      
+      form(method="post" action="/"+action)
+
+        label track (spotify uri)
+          input(class="input" type="url" name="track" value="spotify:track:0nNiyH4NViNdsL0JJz5yce")
+
+        label why
+          textarea(rows="5" class="input" name="why") Chilled out song, good start to a playlist
+
+        input(type="submit" value="create")

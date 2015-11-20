@@ -9,6 +9,13 @@ var db = new neo4j.GraphDatabase('http://neo4j:neo@localhost:7474');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded());
 
+app.set('views', './views');
+app.set('view engine', 'jade');
+
+app.get('/', function(req, res) {
+  res.render('tree', {action: '' });
+});
+
 app.post('/', function(req, res) {
 
   // todo-check
@@ -22,20 +29,20 @@ app.post('/', function(req, res) {
     },
   }, function(err, results) {
     if (err) throw err;
-    var result = results[0];
-    res.send(results);
+    res.redirect(results[0].n._id);
   });
 });
 
 app.get('/:id', function(req, res){
     db.cypher({
-      query: 'MATCH (x-[*0..25]->n) WHERE id(n)={id} RETURN x',
+      query: 'MATCH (track-[*0..25]->n) WHERE id(n)={id} RETURN track',
       params: {
         id: parseInt(req.params.id)
       },
-    }, function(err, results) {
+    }, function(err, tracks) {
       if (err) throw err;
-      res.send(results);
+      tracks.reverse();
+      res.render('tree', { tracks: tracks, action: req.params.id });
     });
 });
 
@@ -44,12 +51,12 @@ app.post('/:id', function(req, res){
       query: 'MATCH (p) WHERE id(p)={id} CREATE (n:track { uri: {uri}, why: {why} }), (p)-[:PARENT]->(n) RETURN n',
       params: {
         id: parseInt(req.params.id),
-        uri: 'foo' + req.body.track,
+        uri: req.body.track,
         why: req.body.why
       },
     }, function(err, results) {
       if (err) throw err;
-      res.send(results);
+      res.redirect(results[0].n._id);
     });
 });
 
