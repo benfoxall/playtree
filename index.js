@@ -11,7 +11,7 @@ var Redis = require('ioredis');
 var app = express();
 
 // yup, lets use "neo" as a password locally
-var db = new neo4j.GraphDatabase('http://neo4j:neo@localhost:7474');
+var db = new neo4j.GraphDatabase(process.env.GRAPHENEDB_URL || 'http://neo4j:neo@localhost:7474');
 var redis = new Redis(process.env.REDISTOGO_URL);
 
 var opts = {
@@ -125,4 +125,4 @@ app.post('/:id', function(req, res){
     });
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
