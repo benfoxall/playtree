@@ -27,3 +27,16 @@ label {
 h1 {
     font-size: 5em;
 }
+.user {
+  float:right;
+  padding:.5em;
+  color:#000;
+}
+.user img {
+  height: 2em;
+  display: inline-block;
+  border-radius: 100%;
+  vertical-align: middle;
+  margin-right:.5em;
+
+}

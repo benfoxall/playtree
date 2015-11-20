@@ -6,6 +6,12 @@ html(lang="en")
     link(rel="stylesheet" href="style.css")
   body
     .container
+      if user
+        p.user
+          if user.properties.photos[0]
+            img(src=user.properties.photos[0])
+          = user.properties.displayName
+
       h1 playtree
 
       if tracks
@@ -17,7 +23,7 @@ html(lang="en")
                 a(href=track.track._id)= track.track.properties.why
 
         hr
-      
+
       form(method="post" action="/"+action)
 
         label track (spotify uri)
