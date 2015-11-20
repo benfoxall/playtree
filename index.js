@@ -87,8 +87,9 @@ app.post('/', function(req, res) {
   console.log(req.body);
 
   db.cypher({
-    query: 'CREATE (n:track { uri: {uri}, why: {why} }) RETURN n',
+    query: 'MATCH (u) WHERE id(u)={userId} CREATE (n:track { uri: {uri}, why: {why}}), (u)-[:AUTHOR]->(n) RETURN n',
     params: {
+      userId: req.user._id,
       uri: req.body.track,
       why: req.body.why
     },
@@ -101,8 +102,7 @@ app.post('/', function(req, res) {
 app.get('/:id', function(req, res, next){
     if(!parseInt(req.params.id)) return next();
     db.cypher({
-      // TODO limit to tracks not users
-      query: 'MATCH (track-[*0..25]->n) WHERE id(n)={id} RETURN track',
+      query: 'MATCH (track-[:PARENT*0..25]->n) WHERE id(n)={id} RETURN track',
       params: {
         id: parseInt(req.params.id)
       },
