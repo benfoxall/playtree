@@ -1,6 +1,6 @@
 body {
-  font-family: sans-serif;
-  color: #E00202;
+  font-family: Helvetica,Arial,sans-serif;
+  color: #000;
 }
 label {
   display: block;
@@ -25,18 +25,22 @@ label {
   margin:auto;
 }
 h1 {
-    font-size: 5em;
+  color:#1ed760;
+  font-size: 5em;
 }
 .user {
   float:right;
   padding:.5em;
-  color:#000;
+  color:#fff;
+  background-color:#1ed760;
+  -webkit-font-smoothing:antialiased;
+  text-align: center;
+  border-radius: 5px;
 }
 .user img {
-  height: 2em;
-  display: inline-block;
+  height: 3em;
+  display: block;
   border-radius: 100%;
-  vertical-align: middle;
-  margin-right:.5em;
-
+  margin:auto;
+  margin-bottom:.5em;
 }
