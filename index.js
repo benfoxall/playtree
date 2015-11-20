@@ -40,7 +40,7 @@ app.use(passport.session());
 passport.use(new SpotifyStrategy({
     clientID: process.env.SPOTIFY_CLIENT_ID,
     clientSecret:  process.env.SPOTIFY_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/callback"
+    callbackURL: process.env.SPOTIFY_CALLBACK_URL
   },
   function(accessToken, refreshToken, profile, done) {
     console.log(profile);
