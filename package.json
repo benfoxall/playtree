@@ -17,8 +17,9 @@
   },
   "homepage": "https://github.com/benfoxall/playtree#readme",
   "dependencies": {
+    "body-parser": "^1.14.1",
     "express": "^4.13.3",
-    "neo4j": "^1.1.1",
+    "neo4j": "2.0.0-RC2",
     "passport": "^0.3.2",
     "passport-twitter": "^1.0.3"
   }
