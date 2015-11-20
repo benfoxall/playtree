@@ -1,0 +1,25 @@
+{
+  "name": "playtree",
+  "version": "1.0.0",
+  "description": "Collaborative tree based playlist maker",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benfoxall/playtree.git"
+  },
+  "author": "Ben Foxall @benjaminbenben",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benfoxall/playtree/issues"
+  },
+  "homepage": "https://github.com/benfoxall/playtree#readme",
+  "dependencies": {
+    "express": "^4.13.3",
+    "neo4j": "^1.1.1",
+    "passport": "^0.3.2",
+    "passport-twitter": "^1.0.3"
+  }
+}

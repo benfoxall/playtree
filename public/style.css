@@ -1,0 +1,29 @@
+body {
+  font-family: sans-serif;
+  color: #E00202;
+}
+label {
+  display: block;
+  font-size: 2em;
+  margin-bottom: 1.5em;
+}
+.input {
+  font-size:1.2em;
+  display: block;
+  margin-top:.25em;
+  border: none;
+  padding: .2em;
+  width: 100%;
+  border-left: 6px solid;
+}
+.input:focus {
+  border-color: #08f;
+  outline: none;
+}
+.container {
+  max-width: 40em;
+  margin:auto;
+}
+h1 {
+    font-size: 5em;
+}
