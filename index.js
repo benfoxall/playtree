@@ -108,6 +108,8 @@ app.get('/:id', function(req, res, next){
       },
     }, function(err, tracks) {
       if (err) throw err;
+      if(!tracks.length) return res.send(404);
+
       tracks.reverse();
       res.render('tree', { tracks: tracks, action: req.params.id, user: req.user });
     });
