@@ -102,14 +102,13 @@ app.post('/', function(req, res) {
 app.get('/:id', function(req, res, next){
     if(!parseInt(req.params.id)) return next();
     db.cypher({
-      query: 'MATCH (track-[:PARENT*0..25]->n) WHERE id(n)={id} RETURN track',
+      query: 'MATCH (user-[:ADDED]->track-[:PARENT*0..25]->n) WHERE id(n)={id} RETURN track, user',
       params: {
         id: parseInt(req.params.id)
       },
     }, function(err, tracks) {
       if (err) throw err;
       if(!tracks.length) return res.send(404);
-
       tracks.reverse();
       res.render('tree', { tracks: tracks, action: req.params.id, user: req.user });
     });

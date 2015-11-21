@@ -9,8 +9,7 @@ html(lang="en")
       if user
         .user
           p
-            if user.properties.photos[0]
-              img(src=user.properties.photos[0])
+            img(src=user.properties.photos[0])
             = user.properties.displayName
       else
         p.user
@@ -25,6 +24,7 @@ html(lang="en")
               h3= track.track.properties.uri
               p
                 a(href=track.track._id)= track.track.properties.why
+              h4.added added by #{track.user.properties.displayName}
 
         hr
 
