@@ -4,6 +4,7 @@ var neo4j = require('neo4j');
 var express = require('express');
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var request = require('request-promise');
 var SpotifyStrategy = require('passport-spotify').Strategy;
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
@@ -86,20 +87,38 @@ app.get('/', function(req, res) {
 
 app.post('/', function(req, res) {
 
+  if(req.body.track){
+    request({
+      uri: 'https://api.spotify.com/v1/tracks/' + req.body.track,
+      json: true
+    })
+      .then(function(track){
+        db.cypher({
+          query: 'MATCH (u) WHERE id(u)={userId} CREATE (n:track {props}), (u)-[:ADDED]->(n) RETURN n',
+          params: {
+            userId: req.user._id,
+            props: {
+              track_id: track.id,
+              name: track.name,
+              album: track.album && track.album.name,
+              duration_ms: track.duration_ms,
+              uri: track.uri,
+              why: req.body.why || '-'
+            }
+          },
+        }, function(err, results) {
+          if (err) throw err;
+          res.redirect(results[0].n._id);
+        });
+
+      })
+  }
+
+  // if(req.body.track)
+
   // todo-check
   console.log(req.body);
 
-  db.cypher({
-    query: 'MATCH (u) WHERE id(u)={userId} CREATE (n:track { uri: {uri}, why: {why}}), (u)-[:ADDED]->(n) RETURN n',
-    params: {
-      userId: req.user._id,
-      uri: req.body.track,
-      why: req.body.why
-    },
-  }, function(err, results) {
-    if (err) throw err;
-    res.redirect(results[0].n._id);
-  });
 });
 
 app.get('/:id', function(req, res, next){
@@ -142,18 +161,34 @@ app.get('/:id', function(req, res, next){
 
 app.post('/:id', function(req, res, next){
     if(!parseInt(req.params.id)) return next();
-    db.cypher({
-      query: 'MATCH (p) WHERE id(p)={id} MATCH (u) WHERE id(u)={userId} CREATE (n:track { uri: {uri}, why: {why} }), (p)-[:PARENT]->(n), (u)-[:ADDED]->(n) RETURN n',
-      params: {
-        userId: req.user._id,
-        id: parseInt(req.params.id),
-        uri: req.body.track,
-        why: req.body.why
-      },
-    }, function(err, results) {
-      if (err) return next(err);
-      res.redirect(results[0].n._id);
-    });
+
+    if(req.body.track){
+      request({
+        uri: 'https://api.spotify.com/v1/tracks/' + req.body.track,
+        json: true
+      }).then(function(track){
+        db.cypher({
+          query: 'MATCH (p) WHERE id(p)={id} MATCH (u) WHERE id(u)={userId} CREATE (n:track { props }), (p)-[:PARENT]->(n), (u)-[:ADDED]->(n) RETURN n',
+          params: {
+            userId: req.user._id,
+            id: parseInt(req.params.id),
+            props: {
+              track_id: track.id,
+              name: track.name,
+              album: track.album && track.album.name,
+              duration_ms: track.duration_ms,
+              uri: track.uri,
+              why: req.body.why || '-'
+            }
+          },
+        }, function(err, results) {
+          if (err) throw err;
+          res.redirect(results[0].n._id);
+        });
+      })
+    } else {
+      next()
+    }
 });
 
 app.listen(process.env.PORT || 3000);

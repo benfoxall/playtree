@@ -27,6 +27,7 @@
     "jade": "^1.11.0",
     "neo4j": "2.0.0-RC2",
     "passport": "^0.3.2",
-    "passport-spotify": "^0.3.0"
+    "passport-spotify": "^0.3.0",
+    "request-promise": "^1.0.2"
   }
 }
