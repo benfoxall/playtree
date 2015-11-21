@@ -52,7 +52,7 @@ passport.use(new SpotifyStrategy({
         photos: profile.photos,
       },
     }, function(err, response){
-      done(err, response[0].user);
+      done(err, response && response[0] && response[0].user);
     });
   }
 ));
