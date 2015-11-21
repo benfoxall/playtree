@@ -7,7 +7,7 @@ html(lang="en")
   body
     .container
       if user
-        .user
+        .user(data-access-token=user.properties.accessToken)
           p
             img(src=user.properties.photos[0])
             = user.properties.displayName

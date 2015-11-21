@@ -45,11 +45,14 @@ passport.use(new SpotifyStrategy({
   function(accessToken, refreshToken, profile, done) {
     console.log(profile);
     db.cypher({
-      query: 'MERGE (user:user { spotifyId: {spotifyId}, displayName: {displayName}, photos: {photos} }) RETURN user',
+      query: 'MERGE (user:user {spotifyId: {spotifyId} }) '+
+        'SET user.displayName={displayName}, user.photos={photos}, user.accessToken={accessToken} '+
+        'RETURN user',
       params: {
         spotifyId: profile.id,
         displayName: profile.displayName,
         photos: profile.photos,
+        accessToken: accessToken,
       },
     }, function(err, response){
       done(err, response && response[0] && response[0].user);
@@ -58,7 +61,7 @@ passport.use(new SpotifyStrategy({
 ));
 
 
-app.get('/auth', passport.authenticate('spotify'));
+app.get('/auth', passport.authenticate('spotify', {scope: ['user-read-private']}));
 
 app.get('/callback',
   passport.authenticate('spotify', { failureRedirect: '/?failed' }),
