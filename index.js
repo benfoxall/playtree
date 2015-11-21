@@ -87,7 +87,7 @@ app.post('/', function(req, res) {
   console.log(req.body);
 
   db.cypher({
-    query: 'MATCH (u) WHERE id(u)={userId} CREATE (n:track { uri: {uri}, why: {why}}), (u)-[:AUTHOR]->(n) RETURN n',
+    query: 'MATCH (u) WHERE id(u)={userId} CREATE (n:track { uri: {uri}, why: {why}}), (u)-[:ADDED]->(n) RETURN n',
     params: {
       userId: req.user._id,
       uri: req.body.track,
