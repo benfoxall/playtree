@@ -30,14 +30,19 @@ html(lang="en")
               h4.added added by #{track.user.properties.displayName}
 
         hr
+        
+      form(method="post" action="search" id="search")
+        label Find a track
+          input(class="input" name="track" value="jon hopkins firelight" id="query")
+        ul#results
 
       form(method="post" action="/"+action)
 
-        label track (spotify uri)
-          input(class="input" type="url" name="track" value="spotify:track:0nNiyH4NViNdsL0JJz5yce")
+        label add a track
+          input(class="input" name="track" id="track_id")
 
         label why
-          textarea(rows="5" class="input" name="why") Chilled out song, good start to a playlist
+          textarea(rows="5" class="input" name="why")
 
         input(type="submit" value="create")
 
