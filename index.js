@@ -107,14 +107,14 @@ app.get('/:id', function(req, res, next){
         id: parseInt(req.params.id)
       },
     }, function(err, tracks) {
-      if (err) throw err;
+      if (err) return next(err);
       if(!tracks.length) return res.send(404);
       tracks.reverse();
       res.render('tree', { tracks: tracks, action: req.params.id, user: req.user });
     });
 });
 
-app.post('/:id', function(req, res){
+app.post('/:id', function(req, res, next){
     if(!parseInt(req.params.id)) return next();
     db.cypher({
       query: 'MATCH (p) WHERE id(p)={id} MATCH (u) WHERE id(u)={userId} CREATE (n:track { uri: {uri}, why: {why} }), (p)-[:PARENT]->(n), (u)-[:ADDED]->(n) RETURN n',
@@ -125,7 +125,7 @@ app.post('/:id', function(req, res){
         why: req.body.why
       },
     }, function(err, results) {
-      if (err) throw err;
+      if (err) return next(err);
       res.redirect(results[0].n._id);
     });
 });
