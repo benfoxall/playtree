@@ -11,9 +11,12 @@ html(lang="en")
           p
             img(src=user.properties.photos[0])
             = user.properties.displayName
+          p
+            a(href="logout") Sign out
       else
-        p.user
-          a(href="auth") Sign in with spotify
+        
+        a(href="auth" class="auth")
+          img(src="log-in.svg" alt="Log in with spotfy")
 
       h1 playtree
 
