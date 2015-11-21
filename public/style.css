@@ -28,36 +28,45 @@ h1 {
   color:#1ed760;
   font-size: 5em;
 }
-.user {
-  float:right;
-  padding: 0 1em;
-  color:#fff;
-  background-color:#1ed760;
-  -webkit-font-smoothing:antialiased;
-  text-align: center;
-  border-radius: 5px;
-}
-.user img {
-  height: 50px;
-  width: 50px;
-  display: block;
-  border-radius: 100%;
-  margin:auto;
-  margin-bottom: 0.5em;
-}
-.user a {
-  padding:1em;
-  color:#fff;
-  text-decoration: none;
-}
-.user small a {
-  padding:0;
-}
+
 
 .auth img {
   max-width: 250px;
   float: right;
+  vertical-align: bottom;
 }
 .auth:hover img{
+  opacity: 0.8
+}
+
+
+.user {
+    float: right;
+    background: #1ED760;
+    border-radius: 100px;
+    color: #fff;
+    margin: 0px;
+    text-transform: uppercase;
+    font-weight: 200;
+    line-height: 50px;
+    padding-right: 25px;
+    padding-left: 56px;
+    text-decoration: none;
+    font-size: 14px;
+    /*letter-spacing: 0.1em;*/
+}
+
+
+.user img {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    margin-top: 10px;
+    margin-left: 3px;
+    position: absolute;
+    margin-left: -45px;
+}
+
+.user:hover {
   opacity: 0.8
 }

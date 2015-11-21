@@ -7,12 +7,9 @@ html(lang="en")
   body
     .container
       if user
-        .user(data-access-token=user.properties.accessToken)
-          p
-            img(src=user.properties.photos[0])
-            = user.properties.displayName
-          p
-            a(href="logout") Sign out
+        a.user(data-access-token=user.properties.accessToken, href="logout")
+          img(src=user.properties.photos[0])
+          = 'Log out'
       else
         
         a(href="auth" class="auth")
