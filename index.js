@@ -118,8 +118,9 @@ app.get('/:id', function(req, res, next){
 app.post('/:id', function(req, res){
     if(!parseInt(req.params.id)) return next();
     db.cypher({
-      query: 'MATCH (p) WHERE id(p)={id} CREATE (n:track { uri: {uri}, why: {why} }), (p)-[:PARENT]->(n) RETURN n',
+      query: 'MATCH (p) WHERE id(p)={id} MATCH (u) WHERE id(u)={userId} CREATE (n:track { uri: {uri}, why: {why} }), (p)-[:PARENT]->(n), (u)-[:ADDED]->(n) RETURN n',
       params: {
+        userId: req.user._id,
         id: parseInt(req.params.id),
         uri: req.body.track,
         why: req.body.why
