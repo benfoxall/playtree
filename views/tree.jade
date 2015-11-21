@@ -37,3 +37,14 @@ html(lang="en")
           textarea(rows="5" class="input" name="why") Chilled out song, good start to a playlist
 
         input(type="submit" value="create")
+
+      if responseTracks && responseTracks.length
+        hr
+        h5 Responses
+        ul
+          each track in responseTracks
+            li
+              h3= track.track.properties.uri
+              p
+                a(href=track.track._id)= track.track.properties.why
+              h4.added added by #{track.user.properties.displayName}

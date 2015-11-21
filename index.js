@@ -101,17 +101,40 @@ app.post('/', function(req, res) {
 
 app.get('/:id', function(req, res, next){
     if(!parseInt(req.params.id)) return next();
+
+    // TODO promisify
+    var done, tracks, nextTracks;
+
     db.cypher({
       query: 'MATCH (user-[:ADDED]->track-[:PARENT*0..25]->n) WHERE id(n)={id} RETURN track, user',
       params: {
         id: parseInt(req.params.id)
       },
-    }, function(err, tracks) {
+    }, function(err, _tracks) {
       if (err) return next(err);
+      tracks = _tracks;
+      if(done) render();
+      done = true;
+    });
+
+    db.cypher({
+      query: 'MATCH (n-[:PARENT]->track<-[:ADDED]-user) WHERE id(n)={id} RETURN track, user LIMIT 10',
+      params: {
+        id: parseInt(req.params.id)
+      },
+    }, function(err, _nextTracks) {
+      if (err) return next(err);
+      nextTracks = _nextTracks;
+      if(done) render();
+      done = true;
+    });
+
+    function render(){
       if(!tracks.length) return res.send(404);
       tracks.reverse();
-      res.render('tree', { tracks: tracks, action: req.params.id, user: req.user });
-    });
+      res.render('tree', { tracks: tracks, responseTracks: nextTracks, action: req.params.id, user: req.user });
+    }
+
 });
 
 app.post('/:id', function(req, res, next){
