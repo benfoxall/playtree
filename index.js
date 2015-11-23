@@ -62,13 +62,14 @@ passport.use(new SpotifyStrategy({
     console.log(profile);
     db.cypher({
       query: 'MERGE (user:user {spotifyId: {spotifyId} }) '+
-        'SET user.displayName={displayName}, user.photos={photos}, user.accessToken={accessToken} '+
+        'SET user.displayName={displayName}, user.photos={photos}, user.accessToken={accessToken}, user.refreshToken={refreshToken} '+
         'RETURN user',
       params: {
         spotifyId: profile.id,
         displayName: profile.displayName,
         photos: profile.photos,
         accessToken: accessToken,
+        refreshToken: refreshToken
       },
     }, function(err, response){
       done(err, response && response[0] && response[0].user);
@@ -89,6 +90,29 @@ app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
 });
+
+app.get('/access-token', function(req, res, next){
+  if(!req.user) return res.status(401);
+
+  request({
+    uri: 'https://accounts.spotify.com/api/token',
+    headers: {
+      'Authorization': 'Basic ' + new Buffer(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64')
+    },
+    form: {
+      grant_type: 'refresh_token',
+      refresh_token: req.user.properties.refreshToken
+    },
+    method: 'post',
+    json: true
+  })
+  .then(function(data){
+    res.send(data.access_token);
+    console.log(">", data)
+  })
+  .catch(next)
+
+})
 
 
 app.use(bodyParser.urlencoded({extended: true}));
