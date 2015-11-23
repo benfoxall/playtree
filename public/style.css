@@ -70,3 +70,37 @@ h1 {
 .user:hover {
   opacity: 0.8
 }
+
+#results {
+    /* margin:0; */
+    padding: 0;
+    list-style: none;
+}
+#results li {
+    margin: .5em 0;
+}
+#results li span {
+  flex: 1;
+  /* background: rgba(255, 0, 0, 0.22); */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#results a{
+  display: flex;/* or inline-flex */
+  color: #000;
+  text-decoration: none;
+  transition: all .1s;
+  padding: 1.2em;
+}
+#results a:hover {
+  background: #1ED760;/* color: #fff
+
+ */
+}
+
+
+span.artist {
+  flex: 1
+}
