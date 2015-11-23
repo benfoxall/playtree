@@ -31,8 +31,20 @@ if (app.get('env') === 'production') {
 }
 
 // just persist the whole thing in the session for now (won't be on the client)
-passport.serializeUser(function(user, done) { done(null, user); });
-passport.deserializeUser(function(obj, done) { done(null, obj); });
+passport.serializeUser(function(user, done) {
+  done(null, user._id);
+});
+
+passport.deserializeUser(function(obj, done) {
+  db.cypher({
+    query: 'MATCH (user:user) WHERE id(user)={userId} RETURN user',
+    params: {
+      userId: obj
+    }
+  }, function(err, results){
+    done(err, (Array.isArray(results) ? results[0] : results).user)
+  });
+});
 
 app.use(session(opts));
 app.use(passport.initialize());
