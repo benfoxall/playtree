@@ -15,6 +15,9 @@ var app = express();
 var db = new neo4j.GraphDatabase(process.env.GRAPHENEDB_URL || 'http://neo4j:neo@localhost:7474');
 var redis = new Redis(process.env.REDISTOGO_URL);
 
+// serve static files without auth
+app.use(express.static('public'));
+
 var opts = {
   resave:false,
   saveUninitialized:true,
@@ -88,7 +91,6 @@ app.get('/logout', function(req, res){
 });
 
 
-app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('views', './views');
 app.set('view engine', 'jade');
